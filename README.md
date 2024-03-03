@@ -8,13 +8,13 @@
     * gateway: 0.0.0.0
 
 ## Use
-1. Share an album with a URL that doesn't expire
-2. Browse to the share url with f12 (network debugging)
-3. Open an individual image and look for the file load
-4. `/api/asset/thumbnail/3c57228c-8262-4e14-998b-c10755413e6d?format=WEBP&key=<this-shares-access-key>`
+1. Share an album with a URL that doesn't expire. This contains the access key for the share (share access key).
+2. Get the guid for that share (your-share-guid-from-api):
+   1. `curl -L -X GET https://my-immich.example.com/api/shared-link/ -H 'Accept: application/json' -H 'x-api-key: yourapikeyhere'`
 
-Set your request url from your frame to 
-`https://url/path?shareId=<your-share-id-from-api>&accessKey=<this-shares-access-key>&user=<user-set-in-python-script>`
+Set your request url from your frame to the below. The first 2 values from from the above steps, the username is the username you'll set in the environment variables.
+
+`https://url/path?shareId=<your-share-guid-from-api>&accessKey=<share-access-key>&user=<user-set-in-python-script>`
 
 
 ### Run the docker container
@@ -32,6 +32,16 @@ If using more than one user, set these additional environment variables
 export USERNAME_2=some-username
 export API_KEY_2=12345
 ```
+
+If your proxy interacts with immich API directly, but you want to redirect users to a different url:
+
+For example, you might run immich and immich-python-slideshow on the same host and want to avoid extra auth added by nginx in front of immich.
+
+```
+# be sure to include the trailing slash for this one
+export IMMICH_API_URL=https://my-immich-host.lan:2283/
+```
+
 
 Start the container
 ```

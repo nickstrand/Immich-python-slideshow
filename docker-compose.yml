@@ -9,6 +9,7 @@ services:
     environment:
       TZ: 'America/Chicago'
       IMMICH_URL: '${IMMICH_URL}'
+      IMMICH_API_URL: '${IMMICH_API_URL:-unset}'
       USERNAME_1: '${USERNAME_1}'
       API_KEY_1: '${API_KEY_1}'
       USERNAME_2: '${USERNAME_2:-unused}'
