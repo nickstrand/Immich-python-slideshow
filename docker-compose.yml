@@ -1,6 +1,5 @@
 version: "3"
 
-# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
 services:
   immich-redirect-proxy-nick:
     container_name: immich-redirect-proxy
@@ -9,6 +8,11 @@ services:
       - "8000:8000/tcp"
     environment:
       TZ: 'America/Chicago'
+      IMMICH_URL: '${IMMICH_URL}'
+      USERNAME_1: '${USERNAME_1}'
+      API_KEY_1: '${API_KEY_1}'
+      USERNAME_2: '${USERNAME_2:-unused}'
+      API_KEY_2: '${API_KEY_2:-unused}'
     restart: unless-stopped
     volumes:
       - ./redirect-multiuser.py:/redirect.py
