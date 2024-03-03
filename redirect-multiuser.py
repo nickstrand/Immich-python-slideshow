@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 
 import os, requests, random, json
+import traceback
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 IMMICH_URL = os.environ["IMMICH_URL"]
+
+IMMICH_API_URL = os.environ.get("IMMICH_API_URL")
+if IMMICH_API_URL == 'unset':
+    IMMICH_API_URL = IMMICH_URL
 
 USERNAME_1 = os.environ['USERNAME_1']
 API_KEY_1 = os.environ['API_KEY_1']
@@ -15,18 +20,18 @@ API_KEY_2 = os.environ['API_KEY_2']
 
 
 def get_images(photo, shareId, user):
-    url = f"{IMMICH_URL}api/shared-link/" + shareId
+    url = f"{IMMICH_API_URL}api/shared-link/" + shareId
     payload = {}
     if user == USERNAME_1:
         headers = {
             'Accept': 'application/json',
-            'x-api-key': '<apikey>',
+            'x-api-key': API_KEY_1,
             'Connection': 'close'
         }
     elif user == USERNAME_2:
         headers = {
             'Accept': 'application/json',
-            'x-api-key': '<apikey>',
+            'x-api-key': API_KEY_2,
             'Connection': 'close'
         }
     # else:
@@ -72,6 +77,17 @@ def status(photo, id, user):
 
 
 class Redirect(BaseHTTPRequestHandler):
+
+    def execute_immich_redirect(self, user, access_key):
+        photo_id = random.choice(photo[user])
+        status(photo, photo_id, user)
+        url_for_redirection = f"{IMMICH_URL}api/asset/file/" + photo_id + "?isThumb=false&isWeb=true&key=" + access_key
+        print(url_for_redirection)
+        photo[user].remove(photo_id)
+        self.send_response(302)
+        self.send_header('Location', url_for_redirection)
+        self.end_headers()
+
     def do_GET(self):
 
         url = f"{IMMICH_URL}" + self.path
@@ -80,37 +96,22 @@ class Redirect(BaseHTTPRequestHandler):
         user = get_query_field(url, 'user')
         reset = get_query_field(url, 'reset')
 
-        if reset:
-            print("Resetting...Getting images.", flush=True)
-            get_images(photo, share_id, user)
-            # print(len(photo[user]),flush=True)
+        if not access_key:
+            self.send_response(400)
 
         try:
-            if not access_key:
-                self.send_response(400)
-            else:
-                if photo[user]:
-                    id = random.choice(photo[user])
-                    status(photo, id, user)
-                    print(f"{IMMICH_URL}api/asset/file/" + id + "?isThumb=false&isWeb=true&key=" + access_key)
-                    photo[user].remove(id)
-                    self.send_response(302)
-                    self.send_header('Location',
-                                     f"{IMMICH_URL}api/asset/file/" + id + "?isThumb=false&isWeb=true&key=" + access_key)
-                    self.end_headers()
-                else:
-                    check_photos(photo, share_id, user)
-        except KeyError:
-            # print("Getting images.",flush=True)
-            get_images(photo, share_id, user)
-            print("KeyError", flush=True)
-            id = random.choice(photo[user])
-            photo[user].remove(id)
-            self.send_response(302)
-            self.send_header('Location',
-                             f"{IMMICH_URL}api/asset/file/" + id + "?isThumb=false&isWeb=true&key=" + access_key)
-            self.end_headers()
-            return
+            if reset:
+                print("Resetting...Getting images.", flush=True)
+                get_images(photo, share_id, user)
+                # print(len(photo[user]),flush=True)
+
+            if user not in photo:
+                check_photos(photo, share_id, user)
+            self.execute_immich_redirect(user, access_key)
+        except Exception as e:
+            print(e, flush=True)
+            print(traceback.format_exc(), flush=True)
+            self.send_error(500)
 
 
 photo = {}
