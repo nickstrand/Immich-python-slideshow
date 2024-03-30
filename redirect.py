@@ -1,41 +1,30 @@
-#!/usr/bin/env python3
-
-import os, requests, random, json
+import os, requests, random, json, environs
 import traceback
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
 from http.server import HTTPServer, BaseHTTPRequestHandler
+from environs import Env
 
-IMMICH_URL = os.environ["IMMICH_URL"]
+env = Env()
+env.read_env()
+key_pairs = env.dict('KEYS', subcast=str)
+
+IMMICH_URL = eval(os.environ["IMMICH_URL"])
 
 IMMICH_API_URL = os.environ.get("IMMICH_API_URL")
 if IMMICH_API_URL == 'unset':
     IMMICH_API_URL = IMMICH_URL
 
-USERNAME_1 = os.environ['USERNAME_1']
-API_KEY_1 = os.environ['API_KEY_1']
-
-USERNAME_2 = os.environ['USERNAME_2']
-API_KEY_2 = os.environ['API_KEY_2']
-
-
 def get_images(photo, shareId, user):
     url = f"{IMMICH_API_URL}api/shared-link/" + shareId
     payload = {}
-    if user == USERNAME_1:
+    if user in key_pairs.keys():
+        API_KEY = key_pairs[user]
         headers = {
             'Accept': 'application/json',
-            'x-api-key': API_KEY_1,
+            'x-api-key': API_KEY,
             'Connection': 'close'
         }
-    elif user == USERNAME_2:
-        headers = {
-            'Accept': 'application/json',
-            'x-api-key': API_KEY_2,
-            'Connection': 'close'
-        }
-    # else:
-    # print("failed",flush=True)
     response = requests.get(url, headers=headers, data=payload)
     y = json.loads(response.text)
     for x in y["assets"]:

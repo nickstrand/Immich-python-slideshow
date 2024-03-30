@@ -10,13 +10,10 @@ services:
       TZ: 'America/Chicago'
       IMMICH_URL: '${IMMICH_URL}'
       IMMICH_API_URL: '${IMMICH_API_URL:-unset}'
-      USERNAME_1: '${USERNAME_1}'
-      API_KEY_1: '${API_KEY_1}'
-      USERNAME_2: '${USERNAME_2:-unused}'
-      API_KEY_2: '${API_KEY_2:-unused}'
+      KEYS: '${KEYS}'
     restart: unless-stopped
     volumes:
-      - ./redirect-multiuser.py:/redirect.py
+      - ./redirect.py:/redirect.py
       - ./install.sh:/install.sh
     entrypoint: '/bin/sh /install.sh'
     networks:
