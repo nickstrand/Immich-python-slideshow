@@ -9,7 +9,7 @@ env = Env()
 env.read_env()
 key_pairs = env.dict('KEYS', subcast=str)
 
-IMMICH_URL = eval(os.environ["IMMICH_URL"])
+IMMICH_URL = os.environ["IMMICH_URL"]
 
 IMMICH_API_URL = os.environ.get("IMMICH_API_URL")
 if IMMICH_API_URL == 'unset':
