@@ -15,13 +15,6 @@ IMMICH_API_URL = os.environ.get("IMMICH_API_URL")
 if IMMICH_API_URL == 'unset':
     IMMICH_API_URL = IMMICH_URL
 
-# USERNAME_1 = os.environ['USERNAME_1']
-# API_KEY_1 = os.environ['API_KEY_1']
-
-# USERNAME_2 = os.environ['USERNAME_2']
-# API_KEY_2 = os.environ['API_KEY_2']
-
-
 def get_images(photo, shareId, user):
     url = f"{IMMICH_API_URL}api/shared-link/" + shareId
     payload = {}
