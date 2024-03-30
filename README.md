@@ -23,14 +23,12 @@ Set required environment variables:
 ```
 # be sure to include the trailing slash for this one
 export IMMICH_URL=https://my-immich.example.com/
-export USERNAME_1=some-username
-export API_KEY_1=12345
+export KEYS=some-username=12345
 ```
 
-If using more than one user, set these additional environment variables
+If using more than one user, add to your keys environment variable
 ```
-export USERNAME_2=some-username
-export API_KEY_2=12345
+export KEYS=some-username=12345,some-other-username=67890[,...=###,...=###]
 ```
 
 If your proxy interacts with immich API directly, but you want to redirect users to a different url:
