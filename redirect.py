@@ -41,18 +41,6 @@ def get_images(photo, shareId, user):
     return photo
 
 
-# def check_photos(photo, shareId, user):
-#     try:
-#         if len(photo[user]) < 2:
-#             print("Getting images for " + user, flush=True)
-#             get_images(photo, shareId, user)
-#         return photo
-#     except KeyError:
-#         print("Key Error. Getting images for " + user, flush=True)
-#         get_images(photo, shareId, user)
-#         return photo
-
-
 def get_query_field(url, field):
     try:
         return parse_qs(urlparse(url).query)[field][0]
