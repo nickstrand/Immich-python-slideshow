@@ -41,16 +41,16 @@ def get_images(photo, shareId, user):
     return photo
 
 
-def check_photos(photo, shareId, user):
-    try:
-        if len(photo[user]) < 2:
-            print("Getting images for " + user, flush=True)
-            get_images(photo, shareId, user)
-        return photo
-    except KeyError:
-        print("Key Error. Getting images for " + user, flush=True)
-        get_images(photo, shareId, user)
-        return photo
+# def check_photos(photo, shareId, user):
+#     try:
+#         if len(photo[user]) < 2:
+#             print("Getting images for " + user, flush=True)
+#             get_images(photo, shareId, user)
+#         return photo
+#     except KeyError:
+#         print("Key Error. Getting images for " + user, flush=True)
+#         get_images(photo, shareId, user)
+#         return photo
 
 
 def get_query_field(url, field):
@@ -93,9 +93,13 @@ class Redirect(BaseHTTPRequestHandler):
                 print("Resetting...Getting images.", flush=True)
                 get_images(photo, share_id, user)
                 # print(len(photo[user]),flush=True)
+            
+            if not photo.get(user):
+                get_images(photo, share_id, user)
 
             if user not in photo:
-                check_photos(photo, share_id, user)
+                get_images(photo, share_id, user)
+
             self.execute_immich_redirect(user, access_key)
         except Exception as e:
             print(e, flush=True)

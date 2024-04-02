@@ -1,0 +1,21 @@
+172.16.8.201 - - [01/Apr/2024 16:13:56] "GET /random?random=1712006036&shareId=d3c8ce75-d77f-4557-bc69-61708bccf2a7&accessKey=3bATSkewAF0Xw3lw7IS4hFBIfyQY_CoKHQxWCPeVCe69XuA2aVtfmbtL06uwlWBfiug&user=nstrand HTTP/1.0" 500 -
+
+Cannot choose from an empty sequence
+
+Traceback (most recent call last):
+
+  File "/srv/redirect.py", line 99, in do_GET
+
+    self.execute_immich_redirect(user, access_key)
+
+  File "/srv/redirect.py", line 71, in execute_immich_redirect
+
+    photo_id = random.choice(photo[user])
+
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/usr/local/lib/python3.12/random.py", line 347, in choice
+
+    raise IndexError('Cannot choose from an empty sequence')
+
+IndexError: Cannot choose from an empty sequence
