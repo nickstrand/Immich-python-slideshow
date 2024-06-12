@@ -58,7 +58,7 @@ class Redirect(BaseHTTPRequestHandler):
     def execute_immich_redirect(self, user, access_key):
         photo_id = random.choice(photo[user])
         status(photo, photo_id, user)
-        url_for_redirection = f"{IMMICH_URL}api/assets/" + photo_id + "/thumbnail?size=preview&key=" + access_key
+        url_for_redirection = f"{IMMICH_URL}api/asset/file/" + photo_id + "?isThumb=false&isWeb=true&key=" + access_key
         print(url_for_redirection)
         photo[user].remove(photo_id)
         self.send_response(302)
