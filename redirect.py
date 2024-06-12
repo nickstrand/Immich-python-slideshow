@@ -16,7 +16,7 @@ if IMMICH_API_URL == 'unset':
     IMMICH_API_URL = IMMICH_URL
 
 def get_images(photo, shareId, user):
-    url = f"{IMMICH_API_URL}api/shared-link/" + shareId
+    url = f"{IMMICH_API_URL}api/shared-links/" + shareId
     payload = {}
     if user in key_pairs.keys():
         API_KEY = key_pairs[user]
@@ -58,8 +58,7 @@ class Redirect(BaseHTTPRequestHandler):
     def execute_immich_redirect(self, user, access_key):
         photo_id = random.choice(photo[user])
         status(photo, photo_id, user)
-        url_for_redirection = f"{IMMICH_URL}api/asset/file/" + photo_id + "?isThumb=false&isWeb=true&key=" + access_key
-        print(url_for_redirection)
+        url_for_redirection = f"{IMMICH_URL}api/assets/" + photo_id + "/thumbnail?size=preview&key=" + access_key
         photo[user].remove(photo_id)
         self.send_response(302)
         self.send_header('Location', url_for_redirection)
