@@ -16,7 +16,7 @@ if IMMICH_API_URL == 'unset':
     IMMICH_API_URL = IMMICH_URL
 
 def get_images(photo, shareId, user):
-    url = f"{IMMICH_API_URL}api/shared-link/" + shareId
+    url = f"{IMMICH_API_URL}api/shared-links/" + shareId
     payload = {}
     if user in key_pairs.keys():
         API_KEY = key_pairs[user]
