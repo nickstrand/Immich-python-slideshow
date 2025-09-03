@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   immich-redirect-proxy-nick:
     container_name: immich-redirect-proxy
@@ -11,6 +9,7 @@ services:
       IMMICH_URL: '${IMMICH_URL}'
       IMMICH_API_URL: '${IMMICH_API_URL:-unset}'
       KEYS: '${KEYS}'
+      DEBUG: '${DEBUG:-0}'
     restart: unless-stopped
     volumes:
       - ./redirect.py:/redirect.py
@@ -24,8 +23,8 @@ networks:
     driver: bridge
     ipam:
       driver: default
-      config:
-      - subnet: 0.0.0.0/0
-        ip_range: 0.0.0.0/0
-        gateway: 0.0.0.0
+#       config:
+#       - subnet: 0.0.0.0/0
+#         ip_range: 0.0.0.0/0
+#         gateway: 0.0.0.0
         
