@@ -1,0 +1,2 @@
+ sudo docker run --restart=always -d -p 8000:8000 -e TZ='America/Chicago' -e IMMICH_URL='https://photos.strand.family/' -e IMMICH_API_URL='https://photos.strand.family/' -e KEYS='olivia=M1fvvhaAEEImpaXGWi4DEpAUlPmhG6oJn5uSJ3uGABU,grays=M1fvvhaAEEImpaXGWi4DEpAUlPmhG6oJn5uSJ3uGABU,nstrand=M1fvvhaAEEImpaXGWi4DEpAUlPmhG6oJn5uSJ3uGABU,mike=y8SfyxcUOfpIpAZp84HV21nOy9rM6Jfms86ZfLGxrk,carmen=y8SfyxcUOfpIpAZp84HV21nOy9rM6Jfms86ZfLGxrk' immich_proxy
+12bfe6a0148d2ead7925df0dbe30addd1ec193834adeadef4844446d4a201903

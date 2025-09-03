@@ -1,5 +1,7 @@
 FROM python:latest
-ADD redirect.py /srv/redirect.py
-RUN pip install requests environs
-EXPOSE 8000
-ENTRYPOINT [ "python3", "/srv/redirect.py" ]
+WORKDIR /app
+COPY redirect.py /redirect.py
+COPY install.sh /install.sh
+RUN pip install --no-cache-dir requests environs
+RUN chmod +x /redirect.py /install.sh
+ENTRYPOINT ["/bin/sh", "/install.sh"]
